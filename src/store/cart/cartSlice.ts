@@ -1,3 +1,4 @@
+/*
 import { CartItem } from '@/types/cartType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
@@ -94,3 +95,4 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+*/

@@ -1,3 +1,4 @@
+/*
 import { getItem, setItem } from '@/helpers/localStorage';
 import { CartItem } from '@/types/cartType';
 import { parseJSON } from '@/utils/common';
@@ -49,3 +50,4 @@ export const calculateTotal = (cart: CartItem[]) =>
     }),
     { totalCount: 0, totalPrice: 0 }
   );
+*/

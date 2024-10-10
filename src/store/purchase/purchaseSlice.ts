@@ -1,3 +1,4 @@
+/*
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -28,3 +29,5 @@ export const { purchaseStart, purchaseSuccess, purchaseFailure } =
   purchaseSlice.actions;
 
 export default purchaseSlice.reducer;
+
+*/

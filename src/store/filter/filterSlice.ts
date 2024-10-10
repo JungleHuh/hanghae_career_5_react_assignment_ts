@@ -1,3 +1,4 @@
+/*
 import { ALL_CATEGORY_ID } from '@/constants';
 import { ProductFilter } from '@/types/productType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -39,3 +40,5 @@ export const filterSlice = createSlice({
 });
 
 export default filterSlice.reducer;
+
+*/

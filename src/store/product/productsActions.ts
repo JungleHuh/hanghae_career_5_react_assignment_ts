@@ -1,3 +1,4 @@
+/*
 import {
   IProduct,
   NewProductDTO,
@@ -47,3 +48,4 @@ export const addProduct = createAsyncThunk<
     }
   }
 );
+*/

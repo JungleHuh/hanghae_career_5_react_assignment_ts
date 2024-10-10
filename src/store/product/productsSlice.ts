@@ -1,3 +1,4 @@
+/*
 import { IProduct } from '@/api/dtos/productDTO';
 import { ProductSliceState } from '@/types/productType';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -70,3 +71,5 @@ const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer;
+
+*/
