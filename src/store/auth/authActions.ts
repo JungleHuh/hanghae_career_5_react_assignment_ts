@@ -25,6 +25,7 @@ export const registerUser = createAsyncThunk<
 );
 */
 
+/*
 import { create } from 'zustand'
 import { registerUserAPI } from '@/api/auth'
 import { IUser } from '@/types/authType'
@@ -63,3 +64,4 @@ export const useAuthStore = create<AuthState>((set) => ({
 // const handleRegister = async () => {
 //   await registerUser({ email, password, name })
 // }
+*/

@@ -7,8 +7,11 @@ export const selectRegisterStatus = (state: RootState): string =>
   state.auth.registerStatus;
 export const selectRegisterError = (state: RootState): string | null =>
   state.auth.registerError;
-*/
+*\
 
+
+
+/*
 import { useAuthStore } from './authSlice';  // authStore는 이전에 만든 Zustand 스토어입니다.
 
 export const selectIsLogin = (): boolean => useAuthStore.getState().isLogin;
@@ -27,3 +30,4 @@ export const selectRegisterError = (): string | null => useAuthStore.getState().
 //
 //   // ... 컴포넌트 로직
 // }
+*/
