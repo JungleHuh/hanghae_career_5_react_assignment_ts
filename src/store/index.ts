@@ -4,7 +4,7 @@ import cartReducer from './cart/cartSlice';
 import filterReducer from './filter/filterSlice';
 import productsReducer from './product/productsSlice';
 import purchaseSlice from './purchase/purchaseSlice';
-
+// 변경
 export const store = configureStore({
   reducer: {
     auth: authReducer,

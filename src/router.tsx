@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
-
+// 변경(? -> ㄱ)
 import { pageRoutes } from '@/apiRoutes';
 import { Cart } from '@/pages/cart';
 import { RootErrorBoundary } from '@/pages/common/components/RootErrorHandler';

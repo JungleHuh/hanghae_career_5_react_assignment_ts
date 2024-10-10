@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import './index.css';
 import { store } from './store';
+// 변경
 
 const queryClient = new QueryClient();
 

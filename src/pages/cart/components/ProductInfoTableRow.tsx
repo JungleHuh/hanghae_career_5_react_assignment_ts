@@ -9,7 +9,7 @@ import { IUser } from '@/types/authType';
 import { CartItem } from '@/types/cartType';
 import { formatPrice } from '@/utils/formatter';
 import { Trash2 } from 'lucide-react';
-
+//변경
 interface ProductInfoTableRowProps {
   item: CartItem;
   user: IUser | null;
