@@ -140,29 +140,18 @@ export const ProductRegistrationModal: React.FC<
 
 */
 
-import { NewProductDTO } from '@/api/dtos/productDTO';
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { ALL_CATEGORY_ID, categories } from '@/constants';
-import { createNewProduct, initialProductState } from '@/helpers/product';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useProductsStore } from '@/store/product/productsStore';
 import { uploadImage } from '@/utils/imageUpload';
-import { ChangeEvent, useState } from 'react';
+import { createNewProduct, initialProductState } from '@/helpers/product';
+import { NewProductDTO } from '../../../api/dtos/productDTO';
+import { categories, ALL_CATEGORY_ID } from '@/constants';
 
 interface ProductRegistrationModalProps {
   isOpen: boolean;
@@ -170,40 +159,29 @@ interface ProductRegistrationModalProps {
   onProductAdded: () => void;
 }
 
-export const ProductRegistrationModal: React.FC<ProductRegistrationModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  onProductAdded 
+export const ProductRegistrationModal: React.FC<ProductRegistrationModalProps> = ({
+  isOpen,
+  onClose,
+  onProductAdded
 }) => {
   const addProduct = useProductsStore(state => state.addProduct);
-  const [product, setProduct] = useState<NewProductDTO>(initialProductState);
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<NewProductDTO>({
+    defaultValues: initialProductState,
+  });
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    const { name, value } = e.target;
-    setProduct((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setProduct((prev) => ({ ...prev, image: file }));
-    }
-  };
-
-  const handleSubmit = async (): Promise<void> => {
+  const onSubmit: SubmitHandler<NewProductDTO> = async (data) => {
     try {
-      if (!product.image) {
-        throw new Error('이미지를 선택해야 합니다.');
+      if (!data.image) {
+        console.error('이미지를 선택해야 합니다.');
+        return;
       }
-      const imageUrl = await uploadImage(product.image as File);
+      const imageUrl = await uploadImage(data.image as File);
       if (!imageUrl) {
         throw new Error('이미지 업로드에 실패했습니다.');
       }
-      const newProduct = createNewProduct(product, imageUrl);
+      const newProduct = createNewProduct(data, imageUrl);
       await addProduct(newProduct);
+      console.log('물품이 성공적으로 등록되었습니다.');
       onClose();
       onProductAdded();
     } catch (error) {
@@ -211,11 +189,11 @@ export const ProductRegistrationModal: React.FC<ProductRegistrationModalProps> =
     }
   };
 
-  const handleCategoryChange = (value: string): void => {
-    setProduct((prev) => ({
-      ...prev,
-      category: { ...prev.category, id: value },
-    }));
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue('image', file);
+    }
   };
 
   return (
@@ -224,31 +202,32 @@ export const ProductRegistrationModal: React.FC<ProductRegistrationModalProps> =
         <DialogHeader>
           <DialogTitle>상품 등록</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
-            name="title"
+            {...register('title', { required: '상품명은 필수입니다.' })}
             placeholder="상품명"
-            onChange={handleChange}
-            value={product.title || ''}
           />
+          {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+
           <Input
-            name="price"
+            {...register('price', { 
+              required: '가격은 필수입니다.',
+              min: { value: 0, message: '가격은 0 이상이어야 합니다.' }
+            })}
             type="number"
             placeholder="가격"
-            onChange={handleChange}
-            value={product.price || ''}
           />
+          {errors.price && <p className="text-red-500">{errors.price.message}</p>}
+
           <Textarea
-            name="description"
-            className="resize-none"
+            {...register('description', { required: '상품 설명은 필수입니다.' })}
             placeholder="상품 설명"
-            onChange={handleChange}
-            value={product.description || ''}
           />
+          {errors.description && <p className="text-red-500">{errors.description.message}</p>}
+
           <Select
-            name="categoryId"
-            onValueChange={handleCategoryChange}
-            value={product.category.id || ''}
+            onValueChange={(value) => setValue('category.id', value)}
+            value={watch('category.id')}
           >
             <SelectTrigger>
               <SelectValue placeholder="카테고리 선택" />
@@ -263,16 +242,18 @@ export const ProductRegistrationModal: React.FC<ProductRegistrationModalProps> =
                 ))}
             </SelectContent>
           </Select>
+
           <Input
-            className="cursor-pointer"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
+            className="cursor-pointer"
           />
-        </div>
-        <DialogFooter>
-          <Button onClick={handleSubmit}>등록</Button>
-        </DialogFooter>
+
+          <DialogFooter>
+            <Button type="submit">등록</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
